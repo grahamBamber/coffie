@@ -1,0 +1,460 @@
+<html lang="en">                    
+  <head>                                     
+    <meta charset="utf-8">                                  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">                                  
+    <meta name="viewport" content="width=device-width, initial-scale=1">                                  
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->                                        
+    <title>COFF.i.e.                              
+    </title>              	 
+<script type="text/javascript" src="source/canvasjs.js"></script>                                    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->               
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>                                                     
+    <!-- Latest compiled and minified CSS -->                                             
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">                                     
+    <!-- Optional theme -->                                          
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">                                     
+    <!-- Latest compiled and minified JavaScript -->         
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>                        
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>             
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->                                         
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->                                         
+    <!--[if lt IE 9]>
+                                  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                                  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                                <![endif]-->                                                                            
+    <link rel="stylesheet" href="jqwidgets/styles/jqx.base.css" type="text/css" />     
+<script type="text/javascript" src="jqwidgets/jqxcore.js"></script>      
+<script type="text/javascript" src="jqwidgets/jqxdraw.js"></script>      
+<script type="text/javascript" src="jqwidgets/jqxgauge.js"></script>                                             
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#gaugeContainer').jqxGauge({
+            
+  ranges: [{
+         startValue: 0,
+         endValue: 55,
+         style: {
+             fill: 'yellow',
+             stroke: 'yellow'
+         },
+         endWidth: 5,
+         startWidth: 1
+     }, {
+         startValue: 55,
+         endValue: 95,
+         style: {
+             fill: 'yellow',
+             stroke: 'yellow'
+         },
+         endWidth: 10,
+         startWidth: 5
+     }, {
+         startValue: 105,
+         endValue: 150,
+         style: {
+             fill: 'red',
+             stroke: 'yellow'
+         },
+         endWidth: 20,
+         startWidth: 15
+     }, {
+         startValue: 95,
+         endValue: 105,
+         style: {
+             fill: 'green',
+             stroke: 'green'
+         },
+         endWidth: 15,
+         startWidth: 10
+     }],           
+            
+                ticksMinor: { interval: 5, size: '5%' },
+                ticksMajor: { interval: 10, size: '9%' },
+                value: 0,
+                colorScheme: 'scheme04',
+                animationDuration: 1200   ,
+                max: 150,
+                width: 350 ,
+                height: 350,
+                
+            });
+            
+            
+            $('#gaugeContainer').on('valueChanging', function (e) {
+                $('#gaugeValue').text(Math.round(e.args.value) + 'c');
+            });
+            
+            
+            $('#gaugeContainer').jqxGauge('value', 100);
+             });
+    </script>              
+	
+<script>	
+  
+	jQuery(document).ready(function() {
+	
+			var dps = []; // dataPoints
+			var dps2 = [];
+			for (var j = 0; j < 200; j++) {	
+				
+			//	dps.push({
+		//			x: dps.length+1,
+		//			y: 0
+		//		});
+				
+		//		dps2.push({
+		//			x: dps.length+1,
+		//			y: 0
+	//			});
+		
+		  
+			};
+			
+			
+			$('#heating_heat').click(function() { 
+         jQuery.ajax (
+				  { 
+					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  type: "post",
+					  data : { "operation" : "HEAT" , "flag" : "on" },	
+					  complete : function (xhr, result)
+					  {
+					      if (result != "success") return;
+					    	var response = xhr.responseText;
+					  }
+		   	})});  
+      
+			$('#heating_steam').click(function() { 
+         jQuery.ajax (
+				  { 
+					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  type: "post",
+					  data : { "operation" : "STEAM" , "flag" : "on" },	
+					  complete : function (xhr, result)
+					  {
+					      if (result != "success") return;
+					    	var response = xhr.responseText;
+					  }
+		    })});         
+		   	
+			$('#heating_off').click(function() { 
+         jQuery.ajax (
+				  { 
+					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  type: "post",
+					  data : { "operation" : "HEAT" , "flag" : "off" },	
+					  complete : function (xhr, result)
+					  {
+					      if (result != "success") return;
+					    	var response = xhr.responseText;
+					  }
+		   	})});   		   	
+      
+			$('#pumping_on').click(function() { 
+         jQuery.ajax (
+				  { 
+					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  type: "post",
+					  data : { "operation" : "PUMP" , "flag" : "on" },	
+					  complete : function (xhr, result)
+					  {
+					      if (result != "success") return;
+					    	var response = xhr.responseText;
+					  }
+		    })});  
+		    
+			$('#pumping_off').click(function() { 
+         jQuery.ajax (
+				  { 
+					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  type: "post",
+					  data : { "operation" : "PUMP" , "flag" : "off" },	
+					  complete : function (xhr, result)
+					  {
+					      if (result != "success") return;
+					    	var response = xhr.responseText;
+					  }
+		    })});                
+      
+      
+			
+			
+		var heat_on_flag;
+    var steam_on_flag;
+    var pump_on_flag;	
+			
+		var chart = new CanvasJS.Chart("chartContainer",{
+						
+      						
+						
+			data: [{
+				type: "line",
+				dataPoints: dps  ,
+				xValueType: "dateTime"
+			}, {
+         type: "line",
+         
+         dataPoints: dps2    ,
+         xValueType: "dateTime",
+      
+      
+      }
+      
+      
+      
+      ]
+		});     
+
+
+
+		function waitForMsg(){
+		       
+	        jQuery.ajax({
+	            type: "GET",
+	            url: "http://192.168.0.15/getstatus",
+	            dataType: "json",
+	            async: true, 
+	            cache: false,
+	            timeout:50000, 
+	            
+	            success: function(data){  
+	              var started_heating;
+	              var started_steaming;
+	              var started_pumping;
+	              
+	                  $('#gaugeContainer').jqxGauge('value', data.temp);
+	                  $('#brewtemp').html(data.set_point);
+	                  $('#steamtemp').html(data.steam_temp);
+	                  //$('#steamtemp').innerHTML(data.steam_point);
+	                  $('#dutycycle').html(data.duty_cycle);
+	                  $('#cycle').html(data.cycle_time);
+	                  $('#k_param').html(data.k_param);
+	                  $('#i_param').html(data.i_param);
+	                  $('#d_param').html(data.d_param);
+	                  
+	                  
+	                  if (data.pump) {
+	                    $('#pumping_on').addClass('active');
+                      $('#pumping_off').removeClass('active');
+                      $('#brew_stat').html('Pumping');
+                      $('#brew_stat').addClass('label-danger');
+                     
+                      
+                    } else {
+                      $('#pumping_off').addClass('active');
+                      $('#pumping_on').removeClass('active');
+                      $('#brew_stat').html('Off');
+                      $('#brew_stat').removeClass('label-danger');
+                    }
+                    
+                    if (data.mode == "auto") {
+                      $('#heating_heat').addClass('active');
+                      $('#heating_steam').removeClass('active');
+                      $('#heating_off').removeClass('active');
+                      $('#heat_stat').html('Heating');
+                      $('#heat_stat').removeClass('label-danger');
+                      $('#heat_stat').addClass('label-warning');
+                    
+                    } else if (data.mode =="steam") {
+                      $('#heating_steam').addClass('active');
+                      $('#heating_heat').removeClass('active');
+                      $('#heating_off').removeClass('active');
+                      $('#heat_stat').html('Steaming');
+                      $('#heat_stat').addClass('label-danger');
+                      $('#heat_stat').removeClass('label-warning');
+                    } else {
+                      $('#heating_off').addClass('active');
+                      $('#heating_heat').removeClass('active');
+                      $('#heating_steam').removeClass('active');
+                      $('#heat_stat').html('Off');
+                      $('#heat_stat').removeClass('label-warning');
+                      $('#heat_stat').removeClass('label-danger');
+                    }
+                    
+	                  j+=1;
+	                  
+	                  var time = new Date;
+	                  dps.push({  y : data.temp , x: time});
+	                  if (data.mode == "auto")
+	                     dps2.push({ y: data.set_point, x: time });
+	                  else if (data.mode == "steam")
+	                     dps2.push({ y: data.steam_temp, x: time });
+	                  else if (data.mode == "off")
+	                      dps2.push({ y: 0, x: time });
+	                      
+	                      
+	                  if (dps.length > 200) {
+                       dps.shift();
+                       dps2.shift();
+                    }
+                    
+	                  
+	                  chart.render();
+	                  
+        	    			setTimeout(waitForMsg, 500); //in millisec
+	        		}}); 
+	            	   
+                   
+       };                	    
+	    	  
+	 
+		
+		waitForMsg();                    
+	}); 
+    
+    	
+	</script>                                  
+  </head>                    
+  <body>                       
+    <div class="container">                                                  
+      <div class="jumbotron" style="background-color: #7B5555 ; color: white">                                  <h1>COFF.i.e.</h1>                                                              
+        <p>Miss Silvia-Pi                                                   
+        </p>                                                
+      </div>                            
+      <div class="navbar navbar-default navbar-static-top">                                         
+        <div id="navbar" class="">                                           
+          <ul class="nav navbar-nav " >                                                   
+            <li class="active">                                            
+              <a href="#">Home</a>                                      
+            </li>                                                   
+            <li>                                      
+            <a href="#about">Schedule</a>                                      
+            </li>                                                   
+            <li>                                      
+            <a href="#contact">Advanced</a>                                      
+            </li>                                                   
+            <li>                                      
+            <a href="#logs">Logs</a>                                      
+            </li>                                                      
+          </ul>                                             
+        </div>                          
+        <!--/.nav-collapse -->                                      
+      </div>                      
+      <div class="row">                 
+        <div class="col-md-6">          
+          <div class="panel panel-info">                                                       
+            <div class="panel-body">               
+              <table>
+                <tr style="padding: 10px">                                   
+                  <td width="50%; ">
+                    <p>Target Brew tempreature:</td><td> 
+                    <span id = "brewtemp" class="label label-primary" style="font-size: 15px">x
+          
+                    </span>
+                    </p></td>     
+                </tr>
+                <tr>              
+                  <td width="50%">
+                    <p>Target Steam tempreature:</td><td> 
+                    <span id="steamtemp" class="label label-primary" style="font-size: 15px">x
+                    </span>
+                    </p></td>
+                </tr>
+              </table>                            
+            </div>                                                                  
+          </div>               
+        </div>                                       
+        <div class="col-md-6">          
+          <div class="panel panel-info">                                                       
+            <div class="panel-body">          
+               <div class="row">
+                  <div class="col-md-6">
+                     Duty Cycle:
+                  
+                  </div>
+                  <div class="col-md-6">   <p>
+                    <span id="dutycycle" class="label label-primary" style="font-size: 15px">x
+                    </span>                    <span id="cycle" class="label label-primary" style="font-size: 15px">x
+                    </span>                </p>
+                  </div>
+               
+               
+               </div>
+               
+              <div class="row">
+                 <div class="col-md-6">
+                 
+                     PID:
+                 </div>
+                 
+                 <div class="col-md-6"><p>
+                     <span id="k_param" class="label label-primary" style="font-size: 15px">x
+                    </span>              
+                    <span id="i_param" class="label label-primary" style="font-size: 15px">x
+                    </span>             
+                    <span id="d_param" class="label label-primary" style="font-size: 15px">x
+                    </span>               </p>
+                 </div>
+              
+              </div>
+               
+                                          
+            </div>                                                                  
+          </div>               
+        </div>                            
+      </div>                               
+      <div class="row">                                   
+        <div class="col-md-4">	               
+          <div id="gaugeContainer">          
+          </div>                   
+          <div id="gaugeValue" style="position: absolute; top: 235px; left: 150px; font-family: Sans-Serif; text-align: center; font-size: 17px; width: 70px;">          
+          </div>                                   
+        </div>                     
+        <div class="col-md-8">                                             
+          <div id="chartContainer" style="height: 350px; width:100%;">            
+          </div>                                         
+        </div>             
+      </div>                              
+      <div class="row">&nbsp;       
+      </div>                                                                
+      <div class="row">                          
+        <div class="col-md-6">                                  
+          <div class="panel panel-info">                            
+            <div class="panel-heading">Heat Control                          
+            </div>                            
+            <div class="panel-body">                                      
+              <div class="btn-group  btn-group-justified role="group" aria-label="...">                                                                                                    
+                <div class="btn-group" role="group">                                                                                                          
+                  <button type="button" id="heating_heat" class="btn btn-default">Heating                                                                                                      
+                  </button>                                                                                            
+                </div>                                                                                            
+                <div class="btn-group" role="group">                                                                                                          
+                  <button type="button" id="heating_steam" class="btn btn-default">Steaming                                                                                                      
+                  </button>                                                                                            
+                </div>                                                                                            
+                <div class="btn-group" role="group">                                                                                                          
+                  <button type="button" id="heating_off" class="btn btn-default">Off                                                                                                      
+                  </button>                                                                                            
+                </div>                                                                             
+              </div>                               
+            </div>                                      
+            <div class="panel-footer">Status: <span id = "heat_stat" class="label label-primary" style="font-size: 15px"> x   </span>                       
+            </div>                               
+          </div>                     
+        </div>                       
+        <div class="col-md-6">                                  
+          <div class="panel panel-info">                            
+            <div class="panel-heading">Pump control                          
+            </div>                            
+            <div class="panel-body">                                   
+              <div class="btn-group  btn-group-justified role="group" aria-label="...">                                                                                                    
+                <div class="btn-group" role="group">                                                                                                          
+                  <button id="pumping_on" type="button" class="btn btn-default">Pumping                                                                                                      
+                  </button>                                                                                            
+                </div>                                                                                            
+                <div class="btn-group" role="group">                                                                                                          
+                  <button id="pumping_off" type="button" class="btn btn-default">Off                                                                                                      
+                  </button>                                                                                            
+                </div>                                                                                                                       
+              </div>                               
+            </div>                                        
+            <div class="panel-footer">Status: <span id = "brew_stat" class="label label-primary" style="font-size: 15px"> x </span>                          
+            </div>                               
+          </div>                             
+        </div>                 
+      </div>                  
+    </div>                                 
+    </div>                            
+    </div>                                          
+  </body>
+</html>
