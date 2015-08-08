@@ -227,7 +227,7 @@ class TSIC(object):
                 if ( result != INVALID_TEMP ):
                     self.m_temperature = result
                     self.m_valid = True
-               else:
+                else:
                     self.m_valid = False
                     
                 self.lock.release()

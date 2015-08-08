@@ -267,7 +267,9 @@ def lcdControlProc(lcd_child_conn):
 
     #lcd = lcddriver.lcd()
     lcd = ssd1306(port=1, address=0x3C)
-    font = ImageFont.truetype('courier.ttf', 15)
+    font = ImageFont.truetype('courier.ttf', 14)
+    font2 = ImageFont.truetype('courier.ttf', 18)
+
     last_line1 = ""
     last_line2 = ""
 
@@ -301,6 +303,7 @@ def lcdControlProc(lcd_child_conn):
             #        logger.error("Trying to re-initialize the LCD by nulling it out and re-instantiating.  Couldln't pull it off :(")
             #    continue
             with canvas(lcd) as draw:
+                  line1, line2, duration = lcd_child_conn.recv()
                   if line1 is not None:
                      if last_line1 != line1:
             #            #lcd.lcd_display_string(line1.ljust(16), 1)
@@ -312,13 +315,13 @@ def lcdControlProc(lcd_child_conn):
             #            #lcd.lcd_display_string(line2.ljust(16), 2)
                          last_line2 = line2
             #            time.sleep(duration)
-                   padding = 2
-                   shape_width = 20
-                   top = padding
-                   bottom = lcd.height - padding - 1
-                   draw.text((1, top),   last_line1,  font=font, fill=255)
-                   draw.text((1, top+16), last_line2, font=font, fill=255)
-                   time.sleep(duration)
+                  padding = 0
+                  shape_width = 20
+                  top = padding
+                  bottom = lcd.height - padding - 1
+                  draw.text((1, top),   last_line1,  font=font, fill=255)
+                  draw.text((1, top+16), last_line2, font=font2, fill=255)
+                  time.sleep(duration)
 
 def brewControlProc(brew_child_conn):
     p = current_process()
@@ -385,6 +388,7 @@ def brewControlProc(brew_child_conn):
                 statusQ2.put([mem.flag_pump_on])  # GET request
 
     except:
+
         exc_type, exc_value, exc_traceback = sys.exc_info()
         logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
     finally:
@@ -436,11 +440,11 @@ def tempControlProc(mode, cycle_time, duty_cycle, set_point, k_param, i_param, d
                 temp_F_pretty = "%3.0f" % temp_F
 
 		if mode == "steam":
-			status = "   Steaming "
+		    status = "Steaming "
                 elif mode == "auto":
-			status = "    Heating "
+		    status = "Heating "
 		else:
-			status = "    Standby"
+	            status = "Standby"
 
                 if mem.flag_pump_on:
                     mem.lcd_connection.send([ 'pV:' +str(temp_C_str) + '  ' +'sV:' +str(temp_SV_str) , None , 0])
@@ -518,6 +522,7 @@ class getstatus:
         #else:
 	#     flag_pump_on = False
 
+        temp = 100
              
         out = json.dumps({"temp" : temp, "elapsed" : elapsed, "mode" : mode, "cycle_time" : cycle_time, "duty_cycle" : duty_cycle,
                      "set_point" : set_point, "k_param" : k_param, "i_param" : i_param, "d_param" : d_param, "pump" : flag_pump_on

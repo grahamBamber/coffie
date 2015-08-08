@@ -114,7 +114,7 @@
 			jQuery('#heating_heat').click(function() { 
          jQuery.ajax (
 				  { 
-					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  url : "", 		// ispresso module is called when / is requested
 					  type: "post",
 					  data : { "operation" : "HEAT" , "flag" : "on" },	
 					  complete : function (xhr, result)
@@ -127,7 +127,7 @@
 			jQuery('#heating_steam').click(function() { 
          jQuery.ajax (
 				  { 
-					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  url : "", 		// ispresso module is called when / is requested
 					  type: "post",
 					  data : { "operation" : "STEAM" , "flag" : "on" },	
 					  complete : function (xhr, result)
@@ -140,7 +140,7 @@
 			jQuery('#heating_off').click(function() { 
          jQuery.ajax (
 				  { 
-					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  url : "", 		// ispresso module is called when / is requested
 					  type: "post",
 					  data : { "operation" : "HEAT" , "flag" : "off" },	
 					  complete : function (xhr, result)
@@ -153,7 +153,7 @@
 			jQuery('#pumping_on').click(function() { 
          jQuery.ajax (
 				  { 
-					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  url : "", 		// ispresso module is called when / is requested
 					  type: "post",
 					  data : { "operation" : "PUMP" , "flag" : "on" },	
 					  complete : function (xhr, result)
@@ -166,7 +166,7 @@
 			jQuery('#pumping_off').click(function() { 
          jQuery.ajax (
 				  { 
-					  url : "http://192.168.0.15/", 		// ispresso module is called when / is requested
+					  url : "", 		// ispresso module is called when / is requested
 					  type: "post",
 					  data : { "operation" : "PUMP" , "flag" : "off" },	
 					  complete : function (xhr, result)
@@ -211,7 +211,7 @@
 		       
 	        jQuery.ajax({
 	            type: "GET",
-	            url: "http://192.168.0.15/getstatus",
+	            url: "getstatus",
 	            dataType: "json",
 	            async: true, 
 	            cache: false,
