@@ -471,6 +471,7 @@ class getstatus:
     def __init__(self):
         pass
 
+    @property
     def GET(self):  # blocking receive
         web.header('Access-Control-Allow-Origin',      '*')
         if (statusQ.full()):  # remove old data
