@@ -33,9 +33,11 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import web, random, json, atexit
 from pid import pidpy as PIDController
-import RPi.GPIO as GPIO 
-#from lcd import lcddriver
+import RPi.GPIO as GPIO
 import glob
+from oled.device import ssd1306, sh1106
+from oled.render import canvas
+from PIL import ImageFont
 from temp import tsic
 
 
@@ -264,40 +266,59 @@ def lcdControlProc(lcd_child_conn):
     logger.info('Starting:' + p.name + ":" + str(p.pid))
 
     #lcd = lcddriver.lcd()
-    
+    lcd = ssd1306(port=1, address=0x3C)
+    font = ImageFont.truetype('courier.ttf', 15)
     last_line1 = ""
     last_line2 = ""
 
     while (True):
         time.sleep(0.25)
         while lcd_child_conn.poll():
-            try:
-                line1, line2, duration = lcd_child_conn.recv()
-                if line1 is not None: 
-                    if last_line1 != line1:
-                        #lcd.lcd_display_string(line1.ljust(16), 1)
+            #try:
+            #    line1, line2, duration = lcd_child_conn.recv()
+            #    if line1 is not None:
+            #        if last_line1 != line1:
+            #            #lcd.lcd_display_string(line1.ljust(16), 1)
+            #            last_line1 = line1
+            #            time.sleep(duration)
+            #
+            #    if line2 is not None:
+            #        if last_line2 != line2:
+            #            #lcd.lcd_display_string(line2.ljust(16), 2)
+            #            last_line2 = line2
+            #            time.sleep(duration)
+
+            #except:
+            #    exc_type, exc_value, exc_traceback = sys.exc_info()
+            #    logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            #    subprocess.call(['i2cdetect', '-y', '1'])
+            #    try:
+            #        lcd = None
+            #        time.sleep(0.1)
+            #        #lcd = lcddriver.lcd()
+            #        time.sleep(0.1)
+            #    except:
+            #        logger.error("Trying to re-initialize the LCD by nulling it out and re-instantiating.  Couldln't pull it off :(")
+            #    continue
+            with canvas(lcd) as draw:
+                  if line1 is not None:
+                     if last_line1 != line1:
+            #            #lcd.lcd_display_string(line1.ljust(16), 1)
                         last_line1 = line1
-                        time.sleep(duration)
-                    
-                if line2 is not None:
-                    if last_line2 != line2:
-                        #lcd.lcd_display_string(line2.ljust(16), 2)
-                        last_line2 = line2
-                        time.sleep(duration)
-
-            except:
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
-                subprocess.call(['i2cdetect', '-y', '1'])
-                try:
-                    lcd = None
-                    time.sleep(0.1)
-                    #lcd = lcddriver.lcd()
-                    time.sleep(0.1)
-                except:  
-                    logger.error("Trying to re-initialize the LCD by nulling it out and re-instantiating.  Couldln't pull it off :(")
-                continue
-
+            #            time.sleep(duration)
+            #
+                  if line2 is not None:
+                     if last_line2 != line2:
+            #            #lcd.lcd_display_string(line2.ljust(16), 2)
+                         last_line2 = line2
+            #            time.sleep(duration)
+                   padding = 2
+                   shape_width = 20
+                   top = padding
+                   bottom = lcd.height - padding - 1
+                   draw.text((1, top),   last_line1,  font=font, fill=255)
+                   draw.text((1, top+16), last_line2, font=font, fill=255)
+                   time.sleep(duration)
 
 def brewControlProc(brew_child_conn):
     p = current_process()
