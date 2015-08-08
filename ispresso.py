@@ -34,7 +34,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 import web, random, json, atexit
 from pid import pidpy as PIDController
 import RPi.GPIO as GPIO 
-from lcd import lcddriver
+#from lcd import lcddriver
 import glob
 from temp import tsic
 
@@ -263,7 +263,7 @@ def lcdControlProc(lcd_child_conn):
     logger = logging.getLogger("ispresso").getChild("lcdControlProc")
     logger.info('Starting:' + p.name + ":" + str(p.pid))
 
-    lcd = lcddriver.lcd()
+    #lcd = lcddriver.lcd()
     
     last_line1 = ""
     last_line2 = ""
@@ -275,24 +275,24 @@ def lcdControlProc(lcd_child_conn):
                 line1, line2, duration = lcd_child_conn.recv()
                 if line1 is not None: 
                     if last_line1 != line1:
-                        lcd.lcd_display_string(line1.ljust(16), 1)
+                        #lcd.lcd_display_string(line1.ljust(16), 1)
                         last_line1 = line1
                         time.sleep(duration)
                     
                 if line2 is not None:
                     if last_line2 != line2:
-                        lcd.lcd_display_string(line2.ljust(16), 2)
+                        #lcd.lcd_display_string(line2.ljust(16), 2)
                         last_line2 = line2
                         time.sleep(duration)
 
             except:
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
-                subprocess.call(['i2cdetect', '-y', '0'])
+                subprocess.call(['i2cdetect', '-y', '1'])
                 try:
                     lcd = None
                     time.sleep(0.1)
-                    lcd = lcddriver.lcd()
+                    #lcd = lcddriver.lcd()
                     time.sleep(0.1)
                 except:  
                     logger.error("Trying to re-initialize the LCD by nulling it out and re-instantiating.  Couldln't pull it off :(")
