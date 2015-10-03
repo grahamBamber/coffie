@@ -38,7 +38,7 @@ import glob
 from oled.device import ssd1306, sh1106
 from oled.render import canvas
 from PIL import ImageFont
-from temp import tsic
+#from temp import tsic
 
 
 # logging.basicConfig()
@@ -496,9 +496,8 @@ class getstatus:
     def __init__(self):
         pass
 
-    @property
     def GET(self):  # blocking receive
-        web.header('Access-Control-Allow-Origin',      '*')
+        #web.header('Access-Control-Allow-Origin',      '*')
         if (statusQ.full()):  # remove old data
             for i in range(statusQ.qsize()):
                 temp, elapsed, mode, cycle_time, duty_cycle, set_point, k_param, i_param, d_param , steam_temp , steam_cycle = web.ctx.globals.statusQ.get() 
@@ -522,12 +521,13 @@ class getstatus:
         #else:
 	#     flag_pump_on = False
 
-        temp = 100
+        
              
         out = json.dumps({"temp" : temp, "elapsed" : elapsed, "mode" : mode, "cycle_time" : cycle_time, "duty_cycle" : duty_cycle,
                      "set_point" : set_point, "k_param" : k_param, "i_param" : i_param, "d_param" : d_param, "pump" : flag_pump_on
 			, "steam_temp" : steam_temp , "steam_cycle" : steam_cycle })
 	
+      
         return out
 
     def POST(self):
@@ -809,29 +809,31 @@ class schedule:
 
 def tempdata():
 
-#    try:
-#        one_wire = mem.one_wire  # gets set below, on init      "/sys/bus/w1/devices/28-000004e0badb/w1_slave"
-#        pipe = Popen(["cat", one_wire], stdout=PIPE)
-#        result = pipe.communicate()[0]
-#        result_list = result.split("=")  
+    try:
+       one_wire = mem.one_wire  # gets set below, on init      "/sys/bus/w1/devices/28-000004e0badb/w1_slave"
+       pipe = Popen(["cat", one_wire], stdout=PIPE)
+       result = pipe.communicate()[0]
+       result_list = result.split("=")  
   
-#        try:
-    if not mem.tsicObj:
-        mem.tsicObj = tsic.TSIC()
-        mem.tsicObj.openTSIC(gpio_tsic)
+       try:
+    #if not mem.tsicObj:
+    #    mem.tsicObj = tsic.TSIC()
+    #    mem.tsicObj.openTSIC(gpio_tsic)
         
-    temp_C = round(float(mem.tsicObj.getDegrees()/1000.00),2)
+   #     temp_C = round(float(mem.tsicObj.getDegrees()/1000.00),2)
     #print str(temp_C)
-    #        temp_C = float(result_list[-1]) / 1000  # temp in Celcius
-    #    except ValueError:  # probably means we can't read the 1-wire sensor
-    #        logger.warn('Could not get a value from 1-wire connector.  Using ' + one_wire )
+         temp_C = float(result_list[-1]) / 1000  # temp in Celcius
+       except ValueError:  # probably means we can't read the 1-wire sensor
+          logger.warn('Could not get a value from 1-wire connector.  Using ' + one_wire )
     #        temp_C = 0
+   
+    
+
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
+
     return temp_C
-
-    #except:
-    #    exc_type, exc_value, exc_traceback = sys.exc_info()
-    #    logger.error(''.join('!! ' + line for line in traceback.format_exception(exc_type, exc_value, exc_traceback)))
-
 def catchButton(btn):  # GPIO
 
     try:
@@ -913,20 +915,20 @@ if __name__ == '__main__':
 
         os.chdir("/var/www")
     
-        #call(["modprobe", "w1-gpio"])
-        #call(["modprobe", "w1-therm"])
-        #call(["modprobe", "i2c-dev"])
+        call(["modprobe", "w1-gpio"])
+        call(["modprobe", "w1-therm"])
+        call(["modprobe", "i2c-dev"])
         
-        #base_dir = '/sys/bus/w1/devices/'
+        base_dir = '/sys/bus/w1/devices/'
         #tsicObj = tsic.TSIC()
         #tsicObj.openTSIC(gpio_tsic)
         #mem.tsicObj = tsicObj
-	#try:
-	#    base_dir = glob.glob(base_dir + '28*')[0]
-	#except:
-	#    logger.error("EPIC FAIL!  1-Wire Temp sensor not found in " + base_dir)
+	try:
+	    base_dir = glob.glob(base_dir + '28*')[0]
+	except:
+	    logger.error("EPIC FAIL!  1-Wire Temp sensor not found in " + base_dir)
 
-        #mem.one_wire = base_dir + '/w1_slave'
+        mem.one_wire = base_dir + '/w1_slave'
         
         urls = ("/", "ispresso", "/settings", "settings", "/schedule", "schedule", "/advanced", "advanced", "/getstatus", "getstatus", "/logdisplay", "logdisplay", "/setup", "setup")
     
